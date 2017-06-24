@@ -19,6 +19,11 @@
 		622B8BEE1EFC97AE0086E8F1 /* SKTEffects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622B8BE21EFC97AE0086E8F1 /* SKTEffects.swift */; };
 		622B8BEF1EFC97AE0086E8F1 /* SKTTimingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622B8BE31EFC97AE0086E8F1 /* SKTTimingFunctions.swift */; };
 		622B8BF01EFC97AE0086E8F1 /* Vector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622B8BE41EFC97AE0086E8F1 /* Vector3.swift */; };
+		625E925C1EFDDE35003610BC /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625E925B1EFDDE35003610BC /* Types.swift */; };
+		625E925E1EFDE339003610BC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625E925D1EFDE339003610BC /* Extensions.swift */; };
+		62FC3FA11EFDCDE30089A66E /* AttackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FC3FA01EFDCDE30089A66E /* AttackButton.swift */; };
+		62FC3FA31EFDD3DD0089A66E /* Test.sks in Resources */ = {isa = PBXBuildFile; fileRef = 62FC3FA21EFDD3DD0089A66E /* Test.sks */; };
+		62FC3FA51EFDD8690089A66E /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FC3FA41EFDD8690089A66E /* Player.swift */; };
 		825533B41EF9E0F300DE5BED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825533B31EF9E0F300DE5BED /* AppDelegate.swift */; };
 		825533B61EF9E0F300DE5BED /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 825533B51EF9E0F300DE5BED /* GameScene.sks */; };
 		825533BA1EF9E0F300DE5BED /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825533B91EF9E0F300DE5BED /* GameScene.swift */; };
@@ -41,6 +46,11 @@
 		622B8BE21EFC97AE0086E8F1 /* SKTEffects.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTEffects.swift; sourceTree = "<group>"; };
 		622B8BE31EFC97AE0086E8F1 /* SKTTimingFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTTimingFunctions.swift; sourceTree = "<group>"; };
 		622B8BE41EFC97AE0086E8F1 /* Vector3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector3.swift; sourceTree = "<group>"; };
+		625E925B1EFDDE35003610BC /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		625E925D1EFDE339003610BC /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		62FC3FA01EFDCDE30089A66E /* AttackButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttackButton.swift; sourceTree = "<group>"; };
+		62FC3FA21EFDD3DD0089A66E /* Test.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Test.sks; sourceTree = "<group>"; };
+		62FC3FA41EFDD8690089A66E /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		825533B01EF9E0F300DE5BED /* IOSProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOSProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		825533B31EF9E0F300DE5BED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		825533B51EF9E0F300DE5BED /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -67,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				825533B51EF9E0F300DE5BED /* GameScene.sks */,
+				62FC3FA21EFDD3DD0089A66E /* Test.sks */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -111,12 +122,16 @@
 			children = (
 				622B8BD81EFC97AE0086E8F1 /* SKTUtils */,
 				622B8BD61EFC97820086E8F1 /* Scenes */,
-				825533B31EF9E0F300DE5BED /* AppDelegate.swift */,
 				825533B91EF9E0F300DE5BED /* GameScene.swift */,
-				825533BB1EF9E0F300DE5BED /* GameViewController.swift */,
-				825533BD1EF9E0F300DE5BED /* Main.storyboard */,
+				62FC3FA41EFDD8690089A66E /* Player.swift */,
+				62FC3FA01EFDCDE30089A66E /* AttackButton.swift */,
+				625E925B1EFDDE35003610BC /* Types.swift */,
+				625E925D1EFDE339003610BC /* Extensions.swift */,
 				825533C01EF9E0F300DE5BED /* Assets.xcassets */,
+				825533B31EF9E0F300DE5BED /* AppDelegate.swift */,
+				825533BB1EF9E0F300DE5BED /* GameViewController.swift */,
 				825533C21EF9E0F300DE5BED /* LaunchScreen.storyboard */,
+				825533BD1EF9E0F300DE5BED /* Main.storyboard */,
 				825533C51EF9E0F300DE5BED /* Info.plist */,
 			);
 			path = IOSProject;
@@ -183,6 +198,7 @@
 			files = (
 				825533BF1EF9E0F300DE5BED /* Main.storyboard in Resources */,
 				825533B61EF9E0F300DE5BED /* GameScene.sks in Resources */,
+				62FC3FA31EFDD3DD0089A66E /* Test.sks in Resources */,
 				825533C11EF9E0F300DE5BED /* Assets.xcassets in Resources */,
 				825533C41EF9E0F300DE5BED /* LaunchScreen.storyboard in Resources */,
 			);
@@ -196,10 +212,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				825533BA1EF9E0F300DE5BED /* GameScene.swift in Sources */,
+				62FC3FA11EFDCDE30089A66E /* AttackButton.swift in Sources */,
 				622B8BE61EFC97AE0086E8F1 /* CGPoint+Extensions.swift in Sources */,
+				62FC3FA51EFDD8690089A66E /* Player.swift in Sources */,
 				622B8BEF1EFC97AE0086E8F1 /* SKTTimingFunctions.swift in Sources */,
 				622B8BEE1EFC97AE0086E8F1 /* SKTEffects.swift in Sources */,
 				622B8BEA1EFC97AE0086E8F1 /* SKAction+SpecialEffects.swift in Sources */,
+				625E925E1EFDE339003610BC /* Extensions.swift in Sources */,
 				622B8BE71EFC97AE0086E8F1 /* CGVector+Extensions.swift in Sources */,
 				622B8BE91EFC97AE0086E8F1 /* SKAction+Extensions.swift in Sources */,
 				622B8BEB1EFC97AE0086E8F1 /* SKColor+Extensions.swift in Sources */,
@@ -208,6 +227,7 @@
 				622B8BEC1EFC97AE0086E8F1 /* SKNode+Extensions.swift in Sources */,
 				622B8BED1EFC97AE0086E8F1 /* SKTAudio.swift in Sources */,
 				622B8BE51EFC97AE0086E8F1 /* CGFloat+Extensions.swift in Sources */,
+				625E925C1EFDDE35003610BC /* Types.swift in Sources */,
 				622B8BF01EFC97AE0086E8F1 /* Vector3.swift in Sources */,
 				825533B41EF9E0F300DE5BED /* AppDelegate.swift in Sources */,
 			);
