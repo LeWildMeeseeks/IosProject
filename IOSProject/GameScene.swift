@@ -10,9 +10,11 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+    let player = SKSpriteNode(imageNamed: "attack_0")
+    let playerSpeed: CGFloat = 10.0
     let cameraMovePointsPerSec: CGFloat = 200.0
     var lastUpdateTime: TimeInterval = 0
-    var playableRect: CGRect
+    var playableRect: CGRect!
     var dt: TimeInterval = 0
     let cameraNode = SKCameraNode()
     var cameraRect: CGRect {
@@ -22,9 +24,18 @@ class GameScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
-        
         backgroundColor = SKColor.black
         
+        player.position = CGPoint(x: 400, y: 700)
+        player.zPosition = 100
+        player.setScale(20)
+        
+        let maxAspectRatio: CGFloat = 16.0 / 9.0
+        let playableHeight = size.width / maxAspectRatio
+        let playableMargin = (size.height - playableHeight) * 0.5
+        
+        playableRect = CGRect(x: 0, y: playableMargin, width: size.width, height: playableHeight)
+
         for i in 0...1 {
             let background = backgroundNode()
             background.anchorPoint = CGPoint.zero
@@ -34,6 +45,8 @@ class GameScene: SKScene {
             background.zPosition = -1
         }
         
+        addChild(player)
+        print("\(player.size)")
         addChild(cameraNode)
         camera = cameraNode
         cameraNode.position = CGPoint(x: size.width * 0.5, y: size.height * 0.5)
@@ -45,19 +58,16 @@ class GameScene: SKScene {
         } else {
             dt = 0
         }
-    }
-    
-    override init(size: CGSize) {
-        let maxAspectRatio: CGFloat = 16.0 / 9.0
-        let playableHeight = size.width / maxAspectRatio
-        let playableMargin = (size.height - playableHeight) * 0.5
         
-        playableRect = CGRect(x: 0, y: playableMargin, width: size.width, height: playableHeight)
-        super.init(size: size)
+        cameraNode.position = CGPoint(x: player.position.x + (scene?.size.width)! * 0.3,
+                                    y: player.position.y + (scene?.size.height)! * 0.15)
+        
+        moveCamera()
+        movePlayer()
     }
     
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func movePlayer() {
+        player.position.x += playerSpeed
     }
 
     func backgroundNode() -> SKSpriteNode {
@@ -66,15 +76,16 @@ class GameScene: SKScene {
         backgroundNode.anchorPoint = CGPoint.zero
         backgroundNode.name = "background"
         //2
-        let background1 = SKSpriteNode(imageNamed: "background1")
+        let background1 = SKSpriteNode(imageNamed: "bg_1")
         background1.anchorPoint = CGPoint.zero
         background1.position = CGPoint(x: 0, y: 0)
         backgroundNode.addChild(background1)
         //3
-        let background2 = SKSpriteNode(imageNamed: "background2")
+        let background2 = SKSpriteNode(imageNamed: "bg_2")
         background2.anchorPoint = CGPoint.zero
         background2.position = CGPoint(x: background1.size.width, y: 0)
         backgroundNode.addChild(background2)
+        
         //4
         backgroundNode.size = CGSize(width: background1.size.width + background2.size.width,
                                      height: background1.size.height)
