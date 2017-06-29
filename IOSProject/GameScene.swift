@@ -9,9 +9,19 @@
 import SpriteKit
 import GameplayKit
 
+protocol EventListenerNode {
+    func interact()
+    func didMoveToScene()
+}
+
 class GameScene: SKScene {
     let player = SKSpriteNode(imageNamed: "attack_0")
     let playerSpeed: CGFloat = 10.0
+    var atkButton: SKSpriteNode!
+    var defButton: SKSpriteNode!
+    var hmrButton: SKSpriteNode!
+    var pauseButton: SKSpriteNode!
+    var isAtking: Bool!
     let cameraMovePointsPerSec: CGFloat = 200.0
     var lastUpdateTime: TimeInterval = 0
     var playableRect: CGRect!
@@ -22,13 +32,40 @@ class GameScene: SKScene {
         let y = cameraNode.position.y - size.height * 0.5 + (size.height - playableRect.height) * 0.5
         return CGRect(x: x, y: y, width: playableRect.width, height: playableRect.height)
     }
+    let runAnim = SKAction.repeatForever(SKAction.animate(with: [
+        SKTexture(imageNamed: "run_0"),
+        SKTexture(imageNamed: "run_1"),
+        SKTexture(imageNamed: "run_2"),
+        SKTexture(imageNamed: "run_3"),
+        SKTexture(imageNamed: "run_4"),
+        SKTexture(imageNamed: "run_5")
+        ], timePerFrame: 0.1))
     
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.black
         
         player.position = CGPoint(x: 400, y: 700)
-        player.zPosition = 100
-        player.setScale(20)
+        player.setScale(3.5)
+        
+        atkButton = childNode(withName: "atkBtn") as? SKSpriteNode
+        atkButton.removeFromParent()
+        atkButton.position = CGPoint(x: -850, y: -400)
+        atkButton.setScale(1.5)
+        
+        defButton = childNode(withName: "defBtn") as? SKSpriteNode
+        defButton.removeFromParent()
+        defButton.position = CGPoint(x: 850, y: -400)
+        defButton.setScale(1.5)
+        
+        hmrButton = childNode(withName: "hmrBtn") as? SKSpriteNode
+        hmrButton.removeFromParent()
+        hmrButton.position = CGPoint(x: -550, y: -400)
+        hmrButton.setScale(1.5)
+        
+        pauseButton = childNode(withName: "pauseBtn") as? SKSpriteNode
+        pauseButton.removeFromParent()
+        pauseButton.position = CGPoint(x: 850, y: 400)
+        pauseButton.setScale(1.5)
         
         let maxAspectRatio: CGFloat = 16.0 / 9.0
         let playableHeight = size.width / maxAspectRatio
@@ -46,10 +83,32 @@ class GameScene: SKScene {
         }
         
         addChild(player)
-        print("\(player.size)")
+        cameraNode.addChild(atkButton)
+        cameraNode.addChild(defButton)
+        cameraNode.addChild(hmrButton)
+        cameraNode.addChild(pauseButton)
+        
         addChild(cameraNode)
         camera = cameraNode
         cameraNode.position = CGPoint(x: size.width * 0.5, y: size.height * 0.5)
+        
+        isAtking = false
+        
+        enumerateChildNodes(withName: "//*", using: { node, _ in
+            if let eventListenerNode = node as? EventListenerNode {
+                eventListenerNode.didMoveToScene()
+            }
+        })
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(attack), name: Notification.Name(AttackNode.atkBtnTouched), object: nil)
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(defend), name: Notification.Name(DefenseNode.defBtnTouched), object: nil)
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(hammerTime), name: Notification.Name(HammerNode.hmrBtnTouched), object: nil)
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(pause), name: Notification.Name(PauseNode.pauseBtnTouched), object: nil)
+        
+        
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -60,10 +119,41 @@ class GameScene: SKScene {
         }
         
         cameraNode.position = CGPoint(x: player.position.x + (scene?.size.width)! * 0.3,
-                                    y: player.position.y + (scene?.size.height)! * 0.15)
+                                    y: player.position.y + (scene?.size.height)! * 0.05)
         
         moveCamera()
         movePlayer()
+        
+        if !isAtking {
+            player.run(runAnim)
+        }
+    }
+    
+    func attack() {
+        
+        print("attack")
+        player.removeAllActions()
+        
+        let atkAnim = SKAction.animate(with: [
+            SKTexture(imageNamed: "attack_0"),
+            SKTexture(imageNamed: "attack_1"),
+            SKTexture(imageNamed: "attack_2")
+            ], timePerFrame: 0.2)
+        player.run(atkAnim)
+        
+
+    }
+    
+    func defend() {
+        print("defend")
+    }
+    
+    func hammerTime() {
+        print("hammered")
+    }
+    
+    func pause() {
+        print("paused")
     }
     
     func movePlayer() {

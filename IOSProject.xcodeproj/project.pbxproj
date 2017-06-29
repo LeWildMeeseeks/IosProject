@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		82371D3B1F046482005A9E5D /* AttackNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82371D3A1F046482005A9E5D /* AttackNode.swift */; };
 		823CD7121EFDDBE70015284B /* MyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 823CD7111EFDDBE60015284B /* MyUtils.swift */; };
 		825533B41EF9E0F300DE5BED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825533B31EF9E0F300DE5BED /* AppDelegate.swift */; };
 		825533B61EF9E0F300DE5BED /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 825533B51EF9E0F300DE5BED /* GameScene.sks */; };
@@ -16,9 +17,13 @@
 		825533BF1EF9E0F300DE5BED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 825533BD1EF9E0F300DE5BED /* Main.storyboard */; };
 		825533C11EF9E0F300DE5BED /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 825533C01EF9E0F300DE5BED /* Assets.xcassets */; };
 		825533C41EF9E0F300DE5BED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 825533C21EF9E0F300DE5BED /* LaunchScreen.storyboard */; };
+		825D333E1F05B84400F4D29B /* PauseNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825D333D1F05B84400F4D29B /* PauseNode.swift */; };
+		825D33401F05BA6F00F4D29B /* DefenseNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825D333F1F05BA6F00F4D29B /* DefenseNode.swift */; };
+		825D33421F05BC2600F4D29B /* HammerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825D33411F05BC2600F4D29B /* HammerNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		82371D3A1F046482005A9E5D /* AttackNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttackNode.swift; sourceTree = "<group>"; };
 		823CD7111EFDDBE60015284B /* MyUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyUtils.swift; sourceTree = "<group>"; };
 		825533B01EF9E0F300DE5BED /* IOSProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOSProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		825533B31EF9E0F300DE5BED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -30,6 +35,9 @@
 		825533C01EF9E0F300DE5BED /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		825533C31EF9E0F300DE5BED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		825533C51EF9E0F300DE5BED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		825D333D1F05B84400F4D29B /* PauseNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PauseNode.swift; sourceTree = "<group>"; };
+		825D333F1F05BA6F00F4D29B /* DefenseNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefenseNode.swift; sourceTree = "<group>"; };
+		825D33411F05BC2600F4D29B /* HammerNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HammerNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +80,10 @@
 				825533C21EF9E0F300DE5BED /* LaunchScreen.storyboard */,
 				825533C51EF9E0F300DE5BED /* Info.plist */,
 				823CD7111EFDDBE60015284B /* MyUtils.swift */,
+				82371D3A1F046482005A9E5D /* AttackNode.swift */,
+				825D333D1F05B84400F4D29B /* PauseNode.swift */,
+				825D333F1F05BA6F00F4D29B /* DefenseNode.swift */,
+				825D33411F05BC2600F4D29B /* HammerNode.swift */,
 			);
 			path = IOSProject;
 			sourceTree = "<group>";
@@ -151,9 +163,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				825533BA1EF9E0F300DE5BED /* GameScene.swift in Sources */,
+				825D33401F05BA6F00F4D29B /* DefenseNode.swift in Sources */,
 				825533BC1EF9E0F300DE5BED /* GameViewController.swift in Sources */,
+				825D33421F05BC2600F4D29B /* HammerNode.swift in Sources */,
+				825D333E1F05B84400F4D29B /* PauseNode.swift in Sources */,
 				825533B41EF9E0F300DE5BED /* AppDelegate.swift in Sources */,
 				823CD7121EFDDBE70015284B /* MyUtils.swift in Sources */,
+				82371D3B1F046482005A9E5D /* AttackNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
