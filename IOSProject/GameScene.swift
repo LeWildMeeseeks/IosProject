@@ -21,7 +21,10 @@ class GameScene: SKScene {
     var defButton: SKSpriteNode!
     var hmrButton: SKSpriteNode!
     var pauseButton: SKSpriteNode!
-    var isAtking: Bool!
+    var isAtking: Bool = false
+    var isDfnding: Bool = false
+    var isHamrd: Bool = false
+    var isPausd: Bool = false
     let cameraMovePointsPerSec: CGFloat = 200.0
     var lastUpdateTime: TimeInterval = 0
     var playableRect: CGRect!
@@ -32,6 +35,8 @@ class GameScene: SKScene {
         let y = cameraNode.position.y - size.height * 0.5 + (size.height - playableRect.height) * 0.5
         return CGRect(x: x, y: y, width: playableRect.width, height: playableRect.height)
     }
+    
+    //animations
     let runAnim = SKAction.repeatForever(SKAction.animate(with: [
         SKTexture(imageNamed: "run_0"),
         SKTexture(imageNamed: "run_1"),
@@ -40,6 +45,21 @@ class GameScene: SKScene {
         SKTexture(imageNamed: "run_4"),
         SKTexture(imageNamed: "run_5")
         ], timePerFrame: 0.1))
+    let atkAnim = SKAction.animate(with: [
+        SKTexture(imageNamed: "attack_0"),
+        SKTexture(imageNamed: "attack_1"),
+        SKTexture(imageNamed: "attack_2")
+        ], timePerFrame: 0.2)
+    let defAnim = SKAction.animate(with: [
+        SKTexture(imageNamed: "idle_0"),
+        SKTexture(imageNamed: "idle_1"),
+        SKTexture(imageNamed: "idle_2")
+        ], timePerFrame: 0.2)
+    let hmrAnim = SKAction.animate(with: [
+        SKTexture(imageNamed: "jump_0"),
+        SKTexture(imageNamed: "jump_1"),
+        SKTexture(imageNamed: "jump_2")
+        ], timePerFrame: 0.4)
     
     override func didMove(to view: SKView) {
         backgroundColor = SKColor.black
@@ -92,7 +112,7 @@ class GameScene: SKScene {
         camera = cameraNode
         cameraNode.position = CGPoint(x: size.width * 0.5, y: size.height * 0.5)
         
-        isAtking = false
+        player.run(runAnim)
         
         enumerateChildNodes(withName: "//*", using: { node, _ in
             if let eventListenerNode = node as? EventListenerNode {
@@ -106,7 +126,7 @@ class GameScene: SKScene {
         
          NotificationCenter.default.addObserver(self, selector: #selector(hammerTime), name: Notification.Name(HammerNode.hmrBtnTouched), object: nil)
         
-         NotificationCenter.default.addObserver(self, selector: #selector(pause), name: Notification.Name(PauseNode.pauseBtnTouched), object: nil)
+         NotificationCenter.default.addObserver(self, selector: #selector(paused), name: Notification.Name(PauseNode.pauseBtnTouched), object: nil)
         
         
     }
@@ -124,35 +144,57 @@ class GameScene: SKScene {
         moveCamera()
         movePlayer()
         
-        if !isAtking {
-            player.run(runAnim)
-        }
     }
     
     func attack() {
-        
-        print("attack")
-        player.removeAllActions()
-        
-        let atkAnim = SKAction.animate(with: [
-            SKTexture(imageNamed: "attack_0"),
-            SKTexture(imageNamed: "attack_1"),
-            SKTexture(imageNamed: "attack_2")
-            ], timePerFrame: 0.2)
-        player.run(atkAnim)
-        
-
+        if !isAtking {
+            print("attack")
+            if player.hasActions() {
+                player.removeAllActions()
+            }
+            isAtking = true
+            
+            let seq = SKAction.sequence([atkAnim, SKAction.run {
+                    self.isAtking = false
+                }, runAnim])
+            
+            player.run(seq)
+        }
     }
     
     func defend() {
-        print("defend")
+        if !isDfnding {
+            print("defend")
+            if player.hasActions() {
+                player.removeAllActions()
+            }
+            isDfnding = true
+            
+            let seq = SKAction.sequence([defAnim, SKAction.run {
+                    self.isDfnding = false
+                }, runAnim])
+            
+            player.run(seq)
+        }
     }
     
     func hammerTime() {
-        print("hammered")
+        if !isHamrd {
+            print("hammertime")
+            if player.hasActions() {
+                player.removeAllActions()
+            }
+            isHamrd = true
+            
+            let seq = SKAction.sequence([hmrAnim, SKAction.run {
+                    self.isHamrd = false
+                }, runAnim])
+            
+            player.run(seq)
+        }
     }
     
-    func pause() {
+    func paused() {
         print("paused")
     }
     

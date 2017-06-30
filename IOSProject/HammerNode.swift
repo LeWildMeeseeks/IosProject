@@ -9,7 +9,6 @@ import SpriteKit
 
 class HammerNode: SKSpriteNode, EventListenerNode {
     static let hmrBtnTouched = "hammer"
-    var isAtking = false
     
     func didMoveToScene() {
         print("hammer button touched")
