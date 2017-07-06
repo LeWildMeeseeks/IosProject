@@ -18,23 +18,21 @@ class GameScene: SKScene {
     
     let player = SKSpriteNode(imageNamed: "attack_0")
     let player2 = SKSpriteNode(imageNamed: "playerbox")
+    
+    
     let playerSpeed: CGFloat = 10.0
+    var lives: Int = 3
 
     
     var hitBox: CGRect!
     var atkBox: CGRect!
-    
-    
-    
-    var lives: Int = 3
-    
-    
-    
+    var defBox: CGRect!
     
     var atkButton: SKSpriteNode!
     var defButton: SKSpriteNode!
     var hmrButton: SKSpriteNode!
     var pauseButton: SKSpriteNode!
+    
     var isAtking: Bool = false
     var isGrding: Bool = false
     
@@ -65,15 +63,17 @@ class GameScene: SKScene {
         player2.setScale(3.5)
         hitBox = CGRect(x: 0, y: 0, width: player2.size.width, height: player2.size.height)
         atkBox = CGRect(x: 0, y: 0, width: player2.size.width, height: player2.size.height)
+        defBox = CGRect(x: 0, y: 0, width: player2.size.width, height: player2.size.height)
         
         backgroundColor = SKColor.black
 
-        
+        // MARK : HIT BOX TEST
         let hitBoxImage = SKShapeNode(rect: hitBox)
         hitBoxImage.name = "box"
         hitBoxImage.position = CGPoint(x: 1000, y: 700)
         hitBoxImage.fillColor = SKColor.red
         hitBoxImage.zPosition = 3
+        //~~~~~~~~~~~~~~~~~~~~~
         
         player.position = CGPoint(x: 400, y: 700)
         player.setScale(3.5)
@@ -110,8 +110,8 @@ class GameScene: SKScene {
             background.anchorPoint = CGPoint.zero
             background.position = CGPoint(x: CGFloat(i) * background.size.width, y: 0)
             background.name = "background"
-            addChild(background)
             background.zPosition = -1
+            addChild(background)
         }
         
         addChild(player)
@@ -167,8 +167,8 @@ class GameScene: SKScene {
     }
     
     func attack() {
-        print("attack")
-        if !isAtking {
+        if !isAtking && !isGrding{
+            print("attack")
             
             player.removeAllActions()
             
@@ -191,8 +191,32 @@ class GameScene: SKScene {
     }
     
     func defend() {
-        print("defend")
-        forceFld()
+        if !isGrding && !isAtking{
+            print("defend")
+            
+            isGrding = true
+            
+            let circle = SKShapeNode(circleOfRadius: 50.0)
+            circle.zPosition = 2
+            circle.position = CGPoint(x: 0 - player.size.width / 40, y: 0 - player.size.height / 128)
+            circle.fillColor = .white
+            circle.alpha = 0.4
+            circle.strokeColor = .yellow
+            circle.glowWidth = 5
+            circle.name = "circle"
+            player.addChild(circle)
+            
+            let action = SKAction.fadeAlpha(to: 0.2, duration: 0.3)
+            
+            let action2 = SKAction.fadeAlpha(to: 0.5, duration: 0.3)
+            
+            let blinking = SKAction.sequence([action, action2, action, SKAction.run {
+                circle.removeFromParent()
+                }])
+            
+            //        circle.run(SKAction.repeatForever(blinking))
+            circle.run(SKAction.sequence([blinking,SKAction.run{self.isGrding = false}]))
+        }
     }
     
     func hammerTime() {
@@ -204,13 +228,16 @@ class GameScene: SKScene {
         print("paused")
     }
     
+    func forceFld() {
+        
+    }
+    
     func movePlayer() {
         player.position.x += playerSpeed
         
         hitBox.origin = CGPoint(x: player.position.x - player.size.width * 0.25, y: player.position.y - player.size.height * 0.35)
        
     }
-    
     
 
     func backgroundNode() -> SKSpriteNode {
@@ -250,10 +277,11 @@ class GameScene: SKScene {
         }
     }
     
+    
     // MARK: TEST COLLISION n' SPAWNING
     func spawnEnemies(){
         let slime = SKSpriteNode(imageNamed: "slime1")
-        slime.name = "arrows"
+        slime.name = "enemy"
         slime.position = CGPoint(x: 1500, y: 600)
         slime.setScale(8)
         
@@ -265,7 +293,6 @@ class GameScene: SKScene {
 
         addChild(slime)
         slime.run(slimeAnim)
-        
         
     }
     
@@ -281,10 +308,9 @@ class GameScene: SKScene {
     }
     
     func checkCollisions(){
+        
         var hitSlime: [SKSpriteNode] = []
         var killSlime: [SKSpriteNode] = []
-        
-        
         
         enumerateChildNodes(withName: "enemy") { node, _ in
             let slime = node as! SKSpriteNode
@@ -327,27 +353,5 @@ class GameScene: SKScene {
         
     }
     
-    func forceFld() {
-        isGrding = true
-        let circle = SKShapeNode(circleOfRadius: 200.0)
-        circle.zPosition = 2
-        circle.position = CGPoint(x: 0 - player.size.width / 40, y: 0 - player.size.height / 128)
-        circle.fillColor = .white
-        circle.alpha = 0.4
-        circle.strokeColor = .yellow
-        circle.glowWidth = 5
-        circle.name = "circle"
-        player.addChild(circle)
-        
-        let action = SKAction.fadeAlpha(to: 0.2, duration: 0.3)
-        
-        let action2 = SKAction.fadeAlpha(to: 0.5, duration: 0.3)
-        
-        let blinking = SKAction.sequence([action, action2, action, SKAction.run {
-            circle.removeFromParent()
-            self.isGrding = false
-            }])
-        
-        circle.run(SKAction.repeatForever(blinking))
-    }
+    
 }
