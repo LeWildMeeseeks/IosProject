@@ -9,10 +9,10 @@
 import SpriteKit
 
 class AttackNode: SKSpriteNode, EventListenerNode {
+    
     static let atkBtnTouched = "attack"
     
     func didMoveToScene() {
-        print("attack button touched")
         isUserInteractionEnabled = true
     }
     

@@ -36,6 +36,7 @@ class GameScene: SKScene {
     var hmrButton: SKSpriteNode!
     var pauseButton: SKSpriteNode!
     var isAtking: Bool = false
+    var isGrding: Bool = false
     
     let cameraMovePointsPerSec: CGFloat = 200.0
     var lastUpdateTime: TimeInterval = 0
@@ -140,8 +141,6 @@ class GameScene: SKScene {
          NotificationCenter.default.addObserver(self, selector: #selector(pause), name: Notification.Name(PauseNode.pauseBtnTouched), object: nil)
         
         spawnEnemies()
-        
-        
     }
     
     override func didEvaluateActions() {
@@ -159,6 +158,7 @@ class GameScene: SKScene {
                                     y: player.position.y + (scene?.size.height)! * 0.05)
         
         moveCamera()
+        
         movePlayer()
         if !player.hasActions(){
             player.run(runAnim)
@@ -180,9 +180,9 @@ class GameScene: SKScene {
             
             isAtking = true
             
-            let node = childNode(withName: "box")
-            node?.zPosition = 0
-            node?.position = CGPoint(x: (player.position.x + player.size.width * 0.125), y: player.position.y - player.size.height * 0.35)
+//            let node = childNode(withName: "box")
+//            node?.zPosition = 0
+//            node?.position = CGPoint(x: (player.position.x + player.size.width * 0.125), y: player.position.y - player.size.height * 0.35)
             
             atkBox.origin = CGPoint(x: (player.position.x + player.size.width * 0.125), y: player.position.y - player.size.height * 0.35)
             
@@ -192,10 +192,12 @@ class GameScene: SKScene {
     
     func defend() {
         print("defend")
+        forceFld()
     }
     
     func hammerTime() {
         print("hammered")
+        
     }
     
     func pause() {
@@ -206,9 +208,10 @@ class GameScene: SKScene {
         player.position.x += playerSpeed
         
         hitBox.origin = CGPoint(x: player.position.x - player.size.width * 0.25, y: player.position.y - player.size.height * 0.35)
-        
        
     }
+    
+    
 
     func backgroundNode() -> SKSpriteNode {
         //1
@@ -250,7 +253,7 @@ class GameScene: SKScene {
     // MARK: TEST COLLISION n' SPAWNING
     func spawnEnemies(){
         let slime = SKSpriteNode(imageNamed: "slime1")
-        slime.name = "enemy"
+        slime.name = "arrows"
         slime.position = CGPoint(x: 1500, y: 600)
         slime.setScale(8)
         
@@ -267,8 +270,8 @@ class GameScene: SKScene {
     }
     
     func playerHit(enemy: SKSpriteNode){
-//        lives -= 1
-        print("Hurt")
+        lives -= 1
+        print("\(lives)")
         enemy.removeFromParent()
     }
     
@@ -280,9 +283,12 @@ class GameScene: SKScene {
     func checkCollisions(){
         var hitSlime: [SKSpriteNode] = []
         var killSlime: [SKSpriteNode] = []
+        
+        
+        
         enumerateChildNodes(withName: "enemy") { node, _ in
             let slime = node as! SKSpriteNode
-            if self.isAtking{
+            if self.isAtking {
                 if slime.frame.intersects(self.atkBox){
                     killSlime.append(slime)
                 }
@@ -295,6 +301,22 @@ class GameScene: SKScene {
             
         }
         
+        enumerateChildNodes(withName: "arrows") { node, _ in
+            let arrow = node as! SKSpriteNode
+            if self.isGrding {
+                if let circle = self.player.childNode(withName: "circle") as? SKSpriteNode {
+                    if arrow.frame.intersects(circle.frame){
+                        killSlime.append(arrow)
+                    }
+                }
+            } else {
+                if arrow.frame.intersects(self.hitBox){
+                    hitSlime.append(arrow)
+                }
+            }
+        }
+        
+        
         for slime in hitSlime{
             playerHit(enemy: slime)
         }
@@ -303,5 +325,29 @@ class GameScene: SKScene {
             playerAtk(enemy: slime)
         }
         
+    }
+    
+    func forceFld() {
+        isGrding = true
+        let circle = SKShapeNode(circleOfRadius: 200.0)
+        circle.zPosition = 2
+        circle.position = CGPoint(x: 0 - player.size.width / 40, y: 0 - player.size.height / 128)
+        circle.fillColor = .white
+        circle.alpha = 0.4
+        circle.strokeColor = .yellow
+        circle.glowWidth = 5
+        circle.name = "circle"
+        player.addChild(circle)
+        
+        let action = SKAction.fadeAlpha(to: 0.2, duration: 0.3)
+        
+        let action2 = SKAction.fadeAlpha(to: 0.5, duration: 0.3)
+        
+        let blinking = SKAction.sequence([action, action2, action, SKAction.run {
+            circle.removeFromParent()
+            self.isGrding = false
+            }])
+        
+        circle.run(SKAction.repeatForever(blinking))
     }
 }

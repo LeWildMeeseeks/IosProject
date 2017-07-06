@@ -12,7 +12,6 @@ class PauseNode: SKSpriteNode, EventListenerNode {
     static let pauseBtnTouched = "pause"
     
     func didMoveToScene() {
-        print("pause button touched")
         isUserInteractionEnabled = true
     }
     

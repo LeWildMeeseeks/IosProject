@@ -12,7 +12,6 @@ class DefenseNode: SKSpriteNode, EventListenerNode {
     static let defBtnTouched = "defend"
     
     func didMoveToScene() {
-        print("def button touched")
         isUserInteractionEnabled = true
     }
     
