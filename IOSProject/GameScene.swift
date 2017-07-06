@@ -15,23 +15,40 @@ protocol EventListenerNode {
 }
 
 class GameScene: SKScene {
+    
     let player = SKSpriteNode(imageNamed: "attack_0")
+    let player2 = SKSpriteNode(imageNamed: "playerbox")
     let playerSpeed: CGFloat = 10.0
+
+    
+    var hitBox: CGRect!
+    var atkBox: CGRect!
+    
+    
+    
+    var lives: Int = 3
+    
+    
+    
+    
     var atkButton: SKSpriteNode!
     var defButton: SKSpriteNode!
     var hmrButton: SKSpriteNode!
     var pauseButton: SKSpriteNode!
-    var isAtking: Bool!
+    var isAtking: Bool = false
+    
     let cameraMovePointsPerSec: CGFloat = 200.0
     var lastUpdateTime: TimeInterval = 0
     var playableRect: CGRect!
     var dt: TimeInterval = 0
+    
     let cameraNode = SKCameraNode()
     var cameraRect: CGRect {
         let x = cameraNode.position.x - size.width * 0.5 + (size.width - playableRect.width) * 0.5
         let y = cameraNode.position.y - size.height * 0.5 + (size.height - playableRect.height) * 0.5
         return CGRect(x: x, y: y, width: playableRect.width, height: playableRect.height)
     }
+    
     let runAnim = SKAction.repeatForever(SKAction.animate(with: [
         SKTexture(imageNamed: "run_0"),
         SKTexture(imageNamed: "run_1"),
@@ -41,12 +58,26 @@ class GameScene: SKScene {
         SKTexture(imageNamed: "run_5")
         ], timePerFrame: 0.1))
     
+   
+    
     override func didMove(to view: SKView) {
+        player2.setScale(3.5)
+        hitBox = CGRect(x: 0, y: 0, width: player2.size.width, height: player2.size.height)
+        atkBox = CGRect(x: 0, y: 0, width: player2.size.width, height: player2.size.height)
+        
         backgroundColor = SKColor.black
+
+        
+        let hitBoxImage = SKShapeNode(rect: hitBox)
+        hitBoxImage.name = "box"
+        hitBoxImage.position = CGPoint(x: 1000, y: 700)
+        hitBoxImage.fillColor = SKColor.red
+        hitBoxImage.zPosition = 3
         
         player.position = CGPoint(x: 400, y: 700)
         player.setScale(3.5)
-        
+
+    
         atkButton = childNode(withName: "atkBtn") as? SKSpriteNode
         atkButton.removeFromParent()
         atkButton.position = CGPoint(x: -850, y: -400)
@@ -83,6 +114,8 @@ class GameScene: SKScene {
         }
         
         addChild(player)
+        addChild(hitBoxImage)
+        
         cameraNode.addChild(atkButton)
         cameraNode.addChild(defButton)
         cameraNode.addChild(hmrButton)
@@ -91,8 +124,6 @@ class GameScene: SKScene {
         addChild(cameraNode)
         camera = cameraNode
         cameraNode.position = CGPoint(x: size.width * 0.5, y: size.height * 0.5)
-        
-        isAtking = false
         
         enumerateChildNodes(withName: "//*", using: { node, _ in
             if let eventListenerNode = node as? EventListenerNode {
@@ -108,7 +139,13 @@ class GameScene: SKScene {
         
          NotificationCenter.default.addObserver(self, selector: #selector(pause), name: Notification.Name(PauseNode.pauseBtnTouched), object: nil)
         
+        spawnEnemies()
         
+        
+    }
+    
+    override func didEvaluateActions() {
+        checkCollisions()
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -123,25 +160,34 @@ class GameScene: SKScene {
         
         moveCamera()
         movePlayer()
-        
-        if !isAtking {
+        if !player.hasActions(){
             player.run(runAnim)
         }
+        
     }
     
     func attack() {
-        
         print("attack")
-        player.removeAllActions()
-        
-        let atkAnim = SKAction.animate(with: [
-            SKTexture(imageNamed: "attack_0"),
-            SKTexture(imageNamed: "attack_1"),
-            SKTexture(imageNamed: "attack_2")
-            ], timePerFrame: 0.2)
-        player.run(atkAnim)
-        
-
+        if !isAtking {
+            
+            player.removeAllActions()
+            
+            let atkAnim = SKAction.animate(with: [
+                SKTexture(imageNamed: "attack_0"),
+                SKTexture(imageNamed: "attack_1"),
+                SKTexture(imageNamed: "attack_2")
+                ], timePerFrame: 0.2)
+            
+            isAtking = true
+            
+            let node = childNode(withName: "box")
+            node?.zPosition = 0
+            node?.position = CGPoint(x: (player.position.x + player.size.width * 0.125), y: player.position.y - player.size.height * 0.35)
+            
+            atkBox.origin = CGPoint(x: (player.position.x + player.size.width * 0.125), y: player.position.y - player.size.height * 0.35)
+            
+            player.run(SKAction.sequence([atkAnim,SKAction.run{self.isAtking = false}]))
+        }
     }
     
     func defend() {
@@ -158,6 +204,10 @@ class GameScene: SKScene {
     
     func movePlayer() {
         player.position.x += playerSpeed
+        
+        hitBox.origin = CGPoint(x: player.position.x - player.size.width * 0.25, y: player.position.y - player.size.height * 0.35)
+        
+       
     }
 
     func backgroundNode() -> SKSpriteNode {
@@ -195,5 +245,63 @@ class GameScene: SKScene {
                     y: background.position.y)
             }
         }
+    }
+    
+    // MARK: TEST COLLISION n' SPAWNING
+    func spawnEnemies(){
+        let slime = SKSpriteNode(imageNamed: "slime1")
+        slime.name = "enemy"
+        slime.position = CGPoint(x: 1500, y: 600)
+        slime.setScale(8)
+        
+        
+        let slimeAnim = SKAction.repeatForever(SKAction.animate(with: [
+            SKTexture(imageNamed: "slime1"),
+            SKTexture(imageNamed: "slime2")],
+            timePerFrame: 0.3))
+
+        addChild(slime)
+        slime.run(slimeAnim)
+        
+        
+    }
+    
+    func playerHit(enemy: SKSpriteNode){
+//        lives -= 1
+        print("Hurt")
+        enemy.removeFromParent()
+    }
+    
+    func playerAtk(enemy: SKSpriteNode){
+        print("Kill")
+        enemy.removeFromParent()
+    }
+    
+    func checkCollisions(){
+        var hitSlime: [SKSpriteNode] = []
+        var killSlime: [SKSpriteNode] = []
+        enumerateChildNodes(withName: "enemy") { node, _ in
+            let slime = node as! SKSpriteNode
+            if self.isAtking{
+                if slime.frame.intersects(self.atkBox){
+                    killSlime.append(slime)
+                }
+               
+            } else {
+                if slime.frame.intersects(self.hitBox){
+                    hitSlime.append(slime)
+                }
+            }
+            
+        }
+        
+        for slime in hitSlime{
+            playerHit(enemy: slime)
+        }
+        
+        for slime in killSlime{
+            playerAtk(enemy: slime)
+        }
+        
     }
 }
