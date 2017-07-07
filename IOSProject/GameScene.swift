@@ -19,14 +19,22 @@ class GameScene: SKScene {
     let player = SKSpriteNode(imageNamed: "attack_0")
     let player2 = SKSpriteNode(imageNamed: "playerbox")
     
+    let randomSlimes: [String] = ["red","yellow","green","blue"]
+    
     
     let playerSpeed: CGFloat = 10.0
-    var lives: Int = 3
+    let slimeSpeed: CGFloat = 6.0
+    var lives: Int = 3 {
+        didSet {
+            heartsChanged()
+        }
+    }
 
     
     var hitBox: CGRect!
     var atkBox: CGRect!
     var defBox: CGRect!
+    var kickBox: CGRect!
     
     var atkButton: SKSpriteNode!
     var defButton: SKSpriteNode!
@@ -35,6 +43,7 @@ class GameScene: SKScene {
     
     var isAtking: Bool = false
     var isGrding: Bool = false
+    var isKcking: Bool = false
     
     let cameraMovePointsPerSec: CGFloat = 200.0
     var lastUpdateTime: TimeInterval = 0
@@ -64,13 +73,14 @@ class GameScene: SKScene {
         hitBox = CGRect(x: 0, y: 0, width: player2.size.width, height: player2.size.height)
         atkBox = CGRect(x: 0, y: 0, width: player2.size.width, height: player2.size.height)
         defBox = CGRect(x: 0, y: 0, width: player2.size.width, height: player2.size.height)
+        kickBox = CGRect(x: 0, y: 0, width: player2.size.width, height: player2.size.height)
         
         backgroundColor = SKColor.black
 
         // MARK : HIT BOX TEST
         let hitBoxImage = SKShapeNode(rect: hitBox)
         hitBoxImage.name = "box"
-        hitBoxImage.position = CGPoint(x: 1000, y: 700)
+//        hitBoxImage.position = CGPoint(x: 1000, y: 700)
         hitBoxImage.fillColor = SKColor.red
         hitBoxImage.zPosition = 3
         //~~~~~~~~~~~~~~~~~~~~~
@@ -108,7 +118,8 @@ class GameScene: SKScene {
         for i in 0...1 {
             let background = backgroundNode()
             background.anchorPoint = CGPoint.zero
-            background.position = CGPoint(x: CGFloat(i) * background.size.width, y: 0)
+            background.position = CGPoint(x: CGFloat(i) * background.size.width, y: (scene?.size.height)! * 0.125)
+            background.scale(to: (scene?.size)!)
             background.name = "background"
             background.zPosition = -1
             addChild(background)
@@ -140,11 +151,20 @@ class GameScene: SKScene {
         
          NotificationCenter.default.addObserver(self, selector: #selector(pause), name: Notification.Name(PauseNode.pauseBtnTouched), object: nil)
         
-        spawnEnemies()
+        for i in 1...3 {
+            let node = childNode(withName: "\(i)") as? SKSpriteNode
+            node?.removeFromParent()
+            node?.position = CGPoint(x: -((scene?.size.width)! * 0.3) - (node?.size.width)! * CGFloat(i - 1) , y: 450)
+            cameraNode.addChild(node!)
+        }
+        
+        run(SKAction.repeatForever(SKAction.sequence([SKAction.run() {[weak self] in self?.spawnSlime()}, SKAction.wait(forDuration: 4.0)])))
+        spawnKnight()
     }
     
     override func didEvaluateActions() {
         checkCollisions()
+        hearts()
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -167,7 +187,7 @@ class GameScene: SKScene {
     }
     
     func attack() {
-        if !isAtking && !isGrding{
+        if !isAtking && !isGrding && !isKcking{
             print("attack")
             
             player.removeAllActions()
@@ -191,7 +211,7 @@ class GameScene: SKScene {
     }
     
     func defend() {
-        if !isGrding && !isAtking{
+        if !isGrding && !isAtking && !isKcking{
             print("defend")
             
             isGrding = true
@@ -214,23 +234,39 @@ class GameScene: SKScene {
                 circle.removeFromParent()
                 }])
             
+            defBox.origin = CGPoint(x: (player.position.x + player.size.width * 0.125), y: player.position.y - player.size.height * 0.35)
+            
             //        circle.run(SKAction.repeatForever(blinking))
             circle.run(SKAction.sequence([blinking,SKAction.run{self.isGrding = false}]))
         }
     }
     
     func hammerTime() {
-        print("hammered")
+        if !isKcking && !isAtking && !isGrding{
+            print("hammered")
+            
+            isKcking = true
+            
+            let atkAnim = SKAction.animate(with: [
+                SKTexture(imageNamed: "attack_0"),
+                SKTexture(imageNamed: "attack_1"),
+                SKTexture(imageNamed: "attack_2")
+                ], timePerFrame: 0.2)
+            
+            kickBox.origin = CGPoint(x: (player.position.x + player.size.width * 0.125), y: player.position.y - player.size.height * 0.35)
+            
+            
+            player.run(SKAction.sequence([atkAnim,SKAction.run{self.isKcking = false}]))
+            
+        }
         
     }
     
     func pause() {
         print("paused")
+        spawnKnight()
     }
-    
-    func forceFld() {
-        
-    }
+
     
     func movePlayer() {
         player.position.x += playerSpeed
@@ -246,12 +282,12 @@ class GameScene: SKScene {
         backgroundNode.anchorPoint = CGPoint.zero
         backgroundNode.name = "background"
         //2
-        let background1 = SKSpriteNode(imageNamed: "bg_1")
+        let background1 = SKSpriteNode(imageNamed: "castle")
         background1.anchorPoint = CGPoint.zero
         background1.position = CGPoint(x: 0, y: 0)
         backgroundNode.addChild(background1)
         //3
-        let background2 = SKSpriteNode(imageNamed: "bg_2")
+        let background2 = SKSpriteNode(imageNamed: "castle")
         background2.anchorPoint = CGPoint.zero
         background2.position = CGPoint(x: background1.size.width, y: 0)
         backgroundNode.addChild(background2)
@@ -279,16 +315,18 @@ class GameScene: SKScene {
     
     
     // MARK: TEST COLLISION n' SPAWNING
-    func spawnEnemies(){
-        let slime = SKSpriteNode(imageNamed: "slime1")
+    func spawnSlime(){
+        let slime = SKSpriteNode(imageNamed: "greenslime1")
         slime.name = "enemy"
-        slime.position = CGPoint(x: 1500, y: 600)
+        slime.position = CGPoint(x: cameraRect.maxX + slime.size.width, y: player.position.y - player.size.width * 0.25)
+        
         slime.setScale(8)
         
+        let color = "\(randomSlimes[Int.random(min:0, max: 3)])"
         
         let slimeAnim = SKAction.repeatForever(SKAction.animate(with: [
-            SKTexture(imageNamed: "slime1"),
-            SKTexture(imageNamed: "slime2")],
+            SKTexture(imageNamed: "\(color)slime1"),
+            SKTexture(imageNamed: "\(color)slime2")],
             timePerFrame: 0.3))
 
         addChild(slime)
@@ -296,7 +334,69 @@ class GameScene: SKScene {
         
     }
     
-    func playerHit(enemy: SKSpriteNode){
+    func spawnKnight(){
+        let knight = SKSpriteNode(imageNamed: "knight1")
+        knight.name = "knight"
+        knight.position = CGPoint(x: cameraRect.maxX + knight.size.width, y: 650)
+        
+        knight.setScale(11)
+        knight.xScale = knight.xScale * -1
+        
+        let knightAnim = SKAction.repeatForever(SKAction.animate(with: [
+            SKTexture(imageNamed: "knight1"),
+            SKTexture(imageNamed: "knight2")],
+            timePerFrame: 0.2))
+        
+        addChild(knight)
+        knight.run(knightAnim)
+        print("\(knight.position.y)")
+        
+    }
+    
+    func hearts() {
+        //        guard let scene = scene else {
+        //            return
+        //        }
+        
+        for i in 1...3 {
+            let heart = childNode(withName: "\(i)") as? SKSpriteNode
+            heart?.position = CGPoint(
+                x: 0,
+                y: 0)
+            heart?.zPosition = 100
+        }
+    }
+    
+    func heartsChanged() {
+        guard let scene = scene else {
+            return
+        }
+        
+        print("heart")
+        
+        for i in 1...3
+        {
+            let node = scene.camera?.childNode(withName: "\(i)") as? SKSpriteNode
+            
+            if lives == 0 {
+                node?.alpha = 0
+            }
+            else if lives == 3 {
+                node?.alpha = 1
+            }
+            else if lives == 2 && i == 1 {
+                node?.alpha = 0
+            }
+            else if lives == 1 && i == 1 || lives == 1 && i == 2 {
+                node?.alpha = 0
+            }
+            else {
+                node?.alpha = 1
+            }
+        }
+    }
+    
+    func playerDamage(enemy: SKSpriteNode){
         lives -= 1
         print("\(lives)")
         enemy.removeFromParent()
@@ -309,47 +409,58 @@ class GameScene: SKScene {
     
     func checkCollisions(){
         
-        var hitSlime: [SKSpriteNode] = []
-        var killSlime: [SKSpriteNode] = []
+        var takeDamage: [SKSpriteNode] = []
+        var eraseObject: [SKSpriteNode] = []
         
         enumerateChildNodes(withName: "enemy") { node, _ in
             let slime = node as! SKSpriteNode
             if self.isAtking {
                 if slime.frame.intersects(self.atkBox){
-                    killSlime.append(slime)
+                    eraseObject.append(slime)
                 }
                
             } else {
                 if slime.frame.intersects(self.hitBox){
-                    hitSlime.append(slime)
+                    takeDamage.append(slime)
                 }
             }
             
         }
         
-        enumerateChildNodes(withName: "arrows") { node, _ in
+        enumerateChildNodes(withName: "arrow") { node, _ in
             let arrow = node as! SKSpriteNode
             if self.isGrding {
-                if let circle = self.player.childNode(withName: "circle") as? SKSpriteNode {
-                    if arrow.frame.intersects(circle.frame){
-                        killSlime.append(arrow)
+                    if arrow.frame.intersects(self.defBox){
+                        eraseObject.append(arrow)
                     }
-                }
             } else {
                 if arrow.frame.intersects(self.hitBox){
-                    hitSlime.append(arrow)
+                    takeDamage.append(arrow)
                 }
             }
         }
         
-        
-        for slime in hitSlime{
-            playerHit(enemy: slime)
+        enumerateChildNodes(withName: "knight") { node, _ in
+            let knight = node as! SKSpriteNode
+            if self.isKcking {
+                if knight.frame.intersects(self.kickBox){
+                    eraseObject.append(knight)
+                }
+            } else {
+                if knight.frame.intersects(self.hitBox){
+                    takeDamage.append(knight)
+                }
+            }
         }
         
-        for slime in killSlime{
+        for slime in takeDamage{
+            playerDamage(enemy: slime)
+        }
+        
+        for slime in eraseObject{
             playerAtk(enemy: slime)
         }
+        
         
     }
     
