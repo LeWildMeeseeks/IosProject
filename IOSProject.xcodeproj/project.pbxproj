@@ -20,6 +20,7 @@
 		62AE21C11F0F0D4F0051B17F /* SKTTimingFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE21B51F0F0D4F0051B17F /* SKTTimingFunctions.swift */; };
 		62AE21C21F0F0D4F0051B17F /* Vector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE21B61F0F0D4F0051B17F /* Vector3.swift */; };
 		62FE25B61F0F4CD400342ED5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62FE25B51F0F4CD400342ED5 /* Assets.xcassets */; };
+		62FE25B81F0F5E5000342ED5 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FE25B71F0F5E4F00342ED5 /* MainMenuScene.swift */; };
 		82371D3B1F046482005A9E5D /* AttackNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82371D3A1F046482005A9E5D /* AttackNode.swift */; };
 		825533B41EF9E0F300DE5BED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825533B31EF9E0F300DE5BED /* AppDelegate.swift */; };
 		825533B61EF9E0F300DE5BED /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 825533B51EF9E0F300DE5BED /* GameScene.sks */; };
@@ -46,6 +47,7 @@
 		62AE21B51F0F0D4F0051B17F /* SKTTimingFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTTimingFunctions.swift; sourceTree = "<group>"; };
 		62AE21B61F0F0D4F0051B17F /* Vector3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector3.swift; sourceTree = "<group>"; };
 		62FE25B51F0F4CD400342ED5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		62FE25B71F0F5E4F00342ED5 /* MainMenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
 		82371D3A1F046482005A9E5D /* AttackNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttackNode.swift; sourceTree = "<group>"; };
 		825533B01EF9E0F300DE5BED /* IOSProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOSProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		825533B31EF9E0F300DE5BED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +100,17 @@
 			path = "SKTUtils copy";
 			sourceTree = "<group>";
 		};
+		62FE25B91F0F68B900342ED5 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				82371D3A1F046482005A9E5D /* AttackNode.swift */,
+				825D333D1F05B84400F4D29B /* PauseNode.swift */,
+				825D333F1F05BA6F00F4D29B /* DefenseNode.swift */,
+				825D33411F05BC2600F4D29B /* HammerNode.swift */,
+			);
+			name = Buttons;
+			sourceTree = "<group>";
+		};
 		825533A71EF9E0F300DE5BED = {
 			isa = PBXGroup;
 			children = (
@@ -119,17 +132,15 @@
 			children = (
 				62AE21AA1F0F0D4F0051B17F /* SKTUtils copy */,
 				6212D2311F0D9CC50057D8DE /* Scenes */,
+				62FE25B91F0F68B900342ED5 /* Buttons */,
 				825533B31EF9E0F300DE5BED /* AppDelegate.swift */,
 				825533B91EF9E0F300DE5BED /* GameScene.swift */,
+				62FE25B71F0F5E4F00342ED5 /* MainMenuScene.swift */,
 				825533BB1EF9E0F300DE5BED /* GameViewController.swift */,
 				825533BD1EF9E0F300DE5BED /* Main.storyboard */,
 				825533C21EF9E0F300DE5BED /* LaunchScreen.storyboard */,
 				825533C51EF9E0F300DE5BED /* Info.plist */,
 				62FE25B51F0F4CD400342ED5 /* Assets.xcassets */,
-				82371D3A1F046482005A9E5D /* AttackNode.swift */,
-				825D333D1F05B84400F4D29B /* PauseNode.swift */,
-				825D333F1F05BA6F00F4D29B /* DefenseNode.swift */,
-				825D33411F05BC2600F4D29B /* HammerNode.swift */,
 			);
 			path = IOSProject;
 			sourceTree = "<group>";
@@ -217,6 +228,7 @@
 				62AE21BF1F0F0D4F0051B17F /* SKTAudio.swift in Sources */,
 				62AE21C01F0F0D4F0051B17F /* SKTEffects.swift in Sources */,
 				825533BC1EF9E0F300DE5BED /* GameViewController.swift in Sources */,
+				62FE25B81F0F5E5000342ED5 /* MainMenuScene.swift in Sources */,
 				62AE21B91F0F0D4F0051B17F /* CGVector+Extensions.swift in Sources */,
 				825D33421F05BC2600F4D29B /* HammerNode.swift in Sources */,
 				825D333E1F05B84400F4D29B /* PauseNode.swift in Sources */,

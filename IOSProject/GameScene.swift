@@ -158,8 +158,9 @@ class GameScene: SKScene {
             cameraNode.addChild(node!)
         }
         
+        
+        
         run(SKAction.repeatForever(SKAction.sequence([SKAction.run() {[weak self] in self?.spawnSlime()}, SKAction.wait(forDuration: 4.0)])))
-        spawnKnight()
     }
     
     override func didEvaluateActions() {
@@ -257,7 +258,6 @@ class GameScene: SKScene {
             
             
             player.run(SKAction.sequence([atkAnim,SKAction.run{self.isKcking = false}]))
-            
         }
         
     }
