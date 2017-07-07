@@ -29,6 +29,8 @@ class GameScene: SKScene {
             heartsChanged()
         }
     }
+    
+    var gameOver = false
 
     
     var hitBox: CGRect!
@@ -78,11 +80,11 @@ class GameScene: SKScene {
         backgroundColor = SKColor.black
 
         // MARK : HIT BOX TEST
-        let hitBoxImage = SKShapeNode(rect: hitBox)
-        hitBoxImage.name = "box"
+//        let hitBoxImage = SKShapeNode(rect: hitBox)
+//        hitBoxImage.name = "box"
 //        hitBoxImage.position = CGPoint(x: 1000, y: 700)
-        hitBoxImage.fillColor = SKColor.red
-        hitBoxImage.zPosition = 3
+//        hitBoxImage.fillColor = SKColor.red
+//        hitBoxImage.zPosition = 3
         //~~~~~~~~~~~~~~~~~~~~~
         
         player.position = CGPoint(x: 400, y: 700)
@@ -126,7 +128,7 @@ class GameScene: SKScene {
         }
         
         addChild(player)
-        addChild(hitBoxImage)
+//        addChild(hitBoxImage)
         
         cameraNode.addChild(atkButton)
         cameraNode.addChild(defButton)
@@ -183,6 +185,15 @@ class GameScene: SKScene {
         movePlayer()
         if !player.hasActions(){
             player.run(runAnim)
+        }
+        
+        if lives <= 0 && !gameOver {
+            gameOver = true
+            print("You Lose")
+            let gameOverScene = GameOverScene(size: size, won: false)
+            gameOverScene.scaleMode = scaleMode
+            let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
+            view?.presentScene(gameOverScene, transition:reveal)
         }
         
     }
@@ -264,7 +275,7 @@ class GameScene: SKScene {
     
     func pause() {
         print("paused")
-        spawnKnight()
+        spawnArrow()
     }
 
     
@@ -350,6 +361,17 @@ class GameScene: SKScene {
         addChild(knight)
         knight.run(knightAnim)
         print("\(knight.position.y)")
+        
+    }
+    
+    func spawnArrow(){
+        let arrow = SKSpriteNode(imageNamed: "arrow")
+        arrow.name = "arrow"
+        arrow.position = CGPoint(x: cameraRect.maxX + arrow.size.width, y: 650)
+        
+        arrow.setScale(10)
+        
+        addChild(arrow)
         
     }
     

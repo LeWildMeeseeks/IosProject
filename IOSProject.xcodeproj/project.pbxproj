@@ -21,6 +21,7 @@
 		62AE21C21F0F0D4F0051B17F /* Vector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62AE21B61F0F0D4F0051B17F /* Vector3.swift */; };
 		62FE25B61F0F4CD400342ED5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62FE25B51F0F4CD400342ED5 /* Assets.xcassets */; };
 		62FE25B81F0F5E5000342ED5 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FE25B71F0F5E4F00342ED5 /* MainMenuScene.swift */; };
+		62FE25BB1F0F6C6900342ED5 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FE25BA1F0F6C6900342ED5 /* GameOverScene.swift */; };
 		82371D3B1F046482005A9E5D /* AttackNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82371D3A1F046482005A9E5D /* AttackNode.swift */; };
 		825533B41EF9E0F300DE5BED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 825533B31EF9E0F300DE5BED /* AppDelegate.swift */; };
 		825533B61EF9E0F300DE5BED /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 825533B51EF9E0F300DE5BED /* GameScene.sks */; };
@@ -48,6 +49,7 @@
 		62AE21B61F0F0D4F0051B17F /* Vector3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector3.swift; sourceTree = "<group>"; };
 		62FE25B51F0F4CD400342ED5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		62FE25B71F0F5E4F00342ED5 /* MainMenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
+		62FE25BA1F0F6C6900342ED5 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		82371D3A1F046482005A9E5D /* AttackNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttackNode.swift; sourceTree = "<group>"; };
 		825533B01EF9E0F300DE5BED /* IOSProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOSProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		825533B31EF9E0F300DE5BED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				825533B31EF9E0F300DE5BED /* AppDelegate.swift */,
 				825533B91EF9E0F300DE5BED /* GameScene.swift */,
 				62FE25B71F0F5E4F00342ED5 /* MainMenuScene.swift */,
+				62FE25BA1F0F6C6900342ED5 /* GameOverScene.swift */,
 				825533BB1EF9E0F300DE5BED /* GameViewController.swift */,
 				825533BD1EF9E0F300DE5BED /* Main.storyboard */,
 				825533C21EF9E0F300DE5BED /* LaunchScreen.storyboard */,
@@ -234,6 +237,7 @@
 				825D333E1F05B84400F4D29B /* PauseNode.swift in Sources */,
 				62AE21B81F0F0D4F0051B17F /* CGPoint+Extensions.swift in Sources */,
 				62AE21BD1F0F0D4F0051B17F /* SKColor+Extensions.swift in Sources */,
+				62FE25BB1F0F6C6900342ED5 /* GameOverScene.swift in Sources */,
 				825533B41EF9E0F300DE5BED /* AppDelegate.swift in Sources */,
 				62AE21BA1F0F0D4F0051B17F /* Int+Extensions.swift in Sources */,
 				62AE21C21F0F0D4F0051B17F /* Vector3.swift in Sources */,
